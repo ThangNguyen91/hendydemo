@@ -3,13 +3,15 @@ import { StyleSheet } from 'react-native';
 import { ThemedView } from '@/components/ThemedView';
 import { VoiceAssistant } from '@/components/VoiceAssistant';
 
-export default function HomeScreen() {
+const HomeScreen = () => {
   return (
     <ThemedView style={styles.container}>
       <VoiceAssistant />
     </ThemedView>
   );
-}
+};
+
+export default HomeScreen;
 
 const styles = StyleSheet.create({
   container: {

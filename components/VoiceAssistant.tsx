@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { useVoiceRecognition } from '../hooks/useVoiceRecognition';
 import { MaterialIcons } from '@expo/vector-icons';
 import { ThemedText } from '@/components/ThemedText';
@@ -58,8 +58,16 @@ export const VoiceAssistant = () => {
         />
       </TouchableOpacity>
       
-      {/* Sound wave visualization placeholder */}
-      <View style={styles.soundWavePlaceholder} />
+      {/* Audio Spectrum Animation */}
+      {isListening && (
+        <View style={styles.spectrumContainer}>
+          <Image
+            source={require('../assets/images/Audio_Spectrum.gif')}
+            style={styles.spectrumImage}
+            resizeMode="contain"
+          />
+        </View>
+      )}
     </ThemedView>
   );
 };
@@ -115,10 +123,15 @@ const styles = StyleSheet.create({
   buttonActive: {
     backgroundColor: '#FFE5E5',
   },
-  soundWavePlaceholder: {
+  spectrumContainer: {
     width: '100%',
-    height: 80, // Chiều cao cho hiệu ứng sóng âm
-    // backgroundColor: 'blue', // Để dễ hình dung
+    height: 80,
     marginTop: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  spectrumImage: {
+    width: '100%',
+    height: '100%',
   },
 }); 
