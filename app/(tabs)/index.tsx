@@ -1,12 +1,19 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 
 import { ThemedView } from '@/components/ThemedView';
 import { VoiceAssistant } from '@/components/VoiceAssistant';
+import { useVoiceRecognition } from '@/hooks/useVoiceRecognition';
 
 const HomeScreen = () => {
+  const { error } = useVoiceRecognition();
+
   return (
     <ThemedView style={styles.container}>
-      <VoiceAssistant />
+      {error ? (
+        <Text style={{ color: 'red', fontSize: 18, margin: 20 }}>{error}</Text>
+      ) : (
+        <VoiceAssistant />
+      )}
     </ThemedView>
   );
 };

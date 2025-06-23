@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
+import { Platform } from 'react-native';
 import Voice, { SpeechResultsEvent, SpeechErrorEvent } from '@react-native-voice/voice';
 import Tts from 'react-native-tts';
+import { check, request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 
 export const useVoiceRecognition = () => {
   const [isListening, setIsListening] = useState(false);
@@ -77,6 +79,26 @@ export const useVoiceRecognition = () => {
     try {
       setError(null);
       setResults([]);
+      let permissionResult;
+      if (Platform.OS === 'android') {
+        permissionResult = await check(PERMISSIONS.ANDROID.RECORD_AUDIO);
+        if (permissionResult !== RESULTS.GRANTED) {
+          const requestResult = await request(PERMISSIONS.ANDROID.RECORD_AUDIO);
+          if (requestResult !== RESULTS.GRANTED) {
+            setError('Microphone permission denied');
+            return;
+          }
+        }
+      } else if (Platform.OS === 'ios') {
+        permissionResult = await check(PERMISSIONS.IOS.MICROPHONE);
+        if (permissionResult !== RESULTS.GRANTED) {
+          const requestResult = await request(PERMISSIONS.IOS.MICROPHONE);
+          if (requestResult !== RESULTS.GRANTED) {
+            setError('Microphone permission denied');
+            return;
+          }
+        }
+      }
       await Voice.start('en-US');
       setIsListening(true);
     } catch (e) {
